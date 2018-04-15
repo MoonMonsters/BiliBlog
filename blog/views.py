@@ -6,14 +6,17 @@ from .models import BlogType, Blog
 
 
 def blog_list(request):
+	# 获取所有博客
 	blogs_all = Blog.objects.all()
-	# 每10页进行分页
+	# 获取分页对象，将博客list传入，并设置每页数量
 	paginator = Paginator(blogs_all, settings.EACH_PAGE_BLOGS_NUM)
 
-	# 获取页码参数，get请求，默认是第一页
+	# 获取页码参数，从get请求获得，默认是第一页
+	# .../?page=1
 	page_num = request.GET.get('page', 1)
+	# 从分页对象中，传入页码，获取每一页该有的数据
 	page_of_blogs = paginator.get_page(page_num)
-
+	# 获取当前页码，注意使用的对象时，从paginator对象中获取的分页对象
 	current_page_num = page_of_blogs.number
 	# page_range = [current_page_num - 2, current_page_num - 1, current_page_num + 1, current_page_num + 2]
 	# 获取当前页码的前后两页
@@ -31,7 +34,6 @@ def blog_list(request):
 		page_range.insert(0, 1)
 	if page_range[-1] != paginator.num_pages:
 		page_range.append(paginator.num_pages)
-
 	context = {}
 	# context['blogs'] = page_of_blogs.object_list
 	context['page_range'] = page_range
@@ -43,8 +45,11 @@ def blog_list(request):
 
 def blog_detail(request, blog_pk):
 	context = {}
-	context['blog'] = get_object_or_404(Blog, pk=blog_pk)
-
+	blog = get_object_or_404(Blog, pk=blog_pk)
+	context['blog'] = blog
+	# dd
+	context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()
+	context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()
 	return render_to_response('blog/blog_detail.html', context)
 
 

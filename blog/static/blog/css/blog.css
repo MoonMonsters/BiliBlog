@@ -33,3 +33,7 @@ div.blog-content {
 div.pagination {
     text-align: center;
 }
+
+div.blog-more {
+    margin-top: 1em;
+}
