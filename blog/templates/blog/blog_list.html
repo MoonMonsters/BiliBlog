@@ -33,7 +33,7 @@
                                         href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{ blog.blog_type.type_name }}</a>
                                     <span class="glyphicon glyphicon-time"></span> {{ blog.created_time|date }}
                                 </p>
-                                <p>{{ blog.content|truncatechars:120 }}</p>
+                                <p>{{ blog.content|striptags|truncatechars:120 }}</p>
                             </div>
                         {% empty %}
                             <div class="blog">
@@ -93,7 +93,8 @@
                     <div class="panel-body">
                         <ul class="blog-types">
                             {% for blog_type in blog_types %}
-                                <li><a href="{% url 'blogs_with_type' blog_type.pk %}">{{ blog_type.type_name }}</a>
+                                <li>
+                                    <a href="{% url 'blogs_with_type' blog_type.pk %}">{{ blog_type.type_name }}({{ blog_type.blog_count }})</a>
                                 </li>
                             {% empty %}
                                 <li>暂无分类</li>
@@ -107,9 +108,9 @@
                     </div>
                     <div class="panel-body">
                         <ul>
-                            {% for date in blog_dates %}
+                            {% for date,value in blog_dates.items %}
                                 <li>
-                                    <a href="{% url 'blogs_with_date' date.year date.month %}">{{ date|date:'Y年m月' }}</a>
+                                    <a href="{% url 'blogs_with_date' date.year date.month %}">{{ date|date:'Y年m月' }}({{ value }})</a>
                                 </li>
                             {% endfor %}
                         </ul>
