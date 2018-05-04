@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.core.paginator import Paginator
 from django.conf import settings
@@ -60,14 +62,23 @@ def blog_list(request):
 
 
 def blog_detail(request, blog_pk):
-	context = {}
 	blog = get_object_or_404(Blog, pk=blog_pk)
+	# 判断cookie中是否存储了文章阅读记录，如果没有，则+1
+	if not request.COOKIES.get('blog_%s_read' % blog_pk, None):
+		blog.read_num += 1
+		blog.save()
+
+	context = {}
 	context['blog'] = blog
 	# 上一篇博客，按时间顺序
 	context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()
 	# 下一篇博客，可以直接使用first()方法来替代[0]
 	context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()
-	return render_to_response('blog/blog_detail.html', context)
+	response = render_to_response('blog/blog_detail.html', context)
+	# 将文章是否已读写入cookie中，避免频繁刷新增加阅读记录
+	# 等到浏览器关闭后，cookie才失效
+	response.set_cookie('blog_%s_read' % blog_pk, 'true')
+	return response
 
 
 def blogs_with_type(request, blog_type_pk):
