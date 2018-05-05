@@ -32,7 +32,7 @@
                                     <span class="glyphicon glyphicon-tag"></span> <a
                                         href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{ blog.blog_type.type_name }}</a>&nbsp;&nbsp;
                                     <span class="glyphicon glyphicon-time"></span> {{ blog.created_time|date }}&nbsp;&nbsp;
-                                    阅读({{ blog.read_num }})
+                                    阅读({{ blog.get_read_num }})
                                 </p>
                                 <p>{{ blog.content|striptags|truncatechars:120 }}</p>
                             </div>

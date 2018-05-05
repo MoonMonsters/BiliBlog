@@ -4,8 +4,11 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.db.models import Count
+from django.contrib.contenttypes.models import ContentType
 
-from .models import BlogType, Blog
+from .models import BlogType, Blog  # , ReadNum
+from read_statistics.models import ReadNum
+from read_statistics.utils import read_statistics_once_read
 
 
 def blogs_common_data(request, blogs):
@@ -63,12 +66,10 @@ def blog_list(request):
 
 def blog_detail(request, blog_pk):
 	blog = get_object_or_404(Blog, pk=blog_pk)
-	# 判断cookie中是否存储了文章阅读记录，如果没有，则+1
-	if not request.COOKIES.get('blog_%s_read' % blog_pk, None):
-		blog.read_num += 1
-		blog.save()
+	# 在博客文章详情页中，取得应该存入cookie中的key值
+	read_cookie_key = read_statistics_once_read(request, blog)
 
-	context = {}
+	context = dict()
 	context['blog'] = blog
 	# 上一篇博客，按时间顺序
 	context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()
@@ -77,7 +78,7 @@ def blog_detail(request, blog_pk):
 	response = render_to_response('blog/blog_detail.html', context)
 	# 将文章是否已读写入cookie中，避免频繁刷新增加阅读记录
 	# 等到浏览器关闭后，cookie才失效
-	response.set_cookie('blog_%s_read' % blog_pk, 'true')
+	response.set_cookie(read_cookie_key, 'true')
 	return response
 
 
