@@ -1,13 +1,9 @@
-from datetime import datetime
-
-from django.shortcuts import render, render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.db.models import Count
-from django.contrib.contenttypes.models import ContentType
 
-from .models import BlogType, Blog  # , ReadNum
-from read_statistics.models import ReadNum
+from .models import BlogType, Blog
 from read_statistics.utils import read_statistics_once_read
 
 

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.fields import exceptions
+from django.utils import timezone
 
 
 class ReadNumExpandMethod(object):
@@ -22,6 +23,18 @@ class ReadNumExpandMethod(object):
 
 class ReadNum(models.Model):
 	# 每篇博客的阅读量
+	read_num = models.IntegerField(default=0)
+
+	# 与ContentType建立外键关系
+	# 固定写法
+	content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
+	object_id = models.PositiveIntegerField()
+	content_object = GenericForeignKey('content_type', 'object_id')
+
+
+class ReadDetail(models.Model):
+	date = models.DateField(default=timezone.now)
+	# 每天中，每篇博客的阅读量，跟ReadNum还是不同的
 	read_num = models.IntegerField(default=0)
 
 	# 与ContentType建立外键关系
