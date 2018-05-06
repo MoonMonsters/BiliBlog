@@ -130,4 +130,5 @@ MEDIA_ROOT = os.path.join(os.path.join(BASE_DIR, 'media'))
 CKEDITOR_UPLOAD_PATH = 'upload/'
 
 # 自定义参数
+# 主页列表中，每一页博客数量
 EACH_PAGE_BLOGS_NUM = 8
