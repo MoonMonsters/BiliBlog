@@ -24,7 +24,7 @@ SECRET_KEY = 'f4@3*w782+&nqzi5^o3@n^#s6nuwh3$2kk_=)ht=35z@yo)6e0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['moonmonsters.pythonanywhere.com', '127.0.0.1']
 
 # Application definition
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
 	'blog',
 	'read_statistics',
+	'comment',
 ]
 
 MIDDLEWARE = [
@@ -119,6 +120,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
 	os.path.join(BASE_DIR, 'static'),
 ]

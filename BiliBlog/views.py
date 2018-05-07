@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Created by Flynn on 2018-04-07 17:46
-import datetime
-
-from django.shortcuts import render_to_response
+from django.shortcuts import render, redirect
 from django.contrib.contenttypes.models import ContentType
-from django.utils import timezone
-from django.db.models import Sum
 from django.core.cache import cache
+from django.contrib import auth
 
 from read_statistics.utils import get_seven_days_read_data, get_today_hot_data, get_yesterday_hot_data, \
 	get_7_days_hot_blogs, get_30_days_hot_blogs
@@ -26,7 +23,25 @@ def home(request):
 	context['today_hot_data'], context['yesterday_hot_data'], context['seven_days_hot_data'], context[
 		'thirty_days_hot_data'] = \
 		get_datas_from_cache(blog_content_type)
-	return render_to_response('home.html', context)
+	return render(request, 'home.html', context)
+
+
+def login(request):
+	"""
+	登录功能
+	"""
+	# 从request中获得username和password
+	username = request.POST.get('username', None)
+	password = request.POST.get('password', None)
+	# 使用auth模块进行username和password验证
+	user = auth.authenticate(request, username=username, password=password)
+	# 如果登录成功，则会返回user对象
+	if user is not None:
+		# 登录，在request中会保存user对象，在网页中可以使用
+		auth.login(request, user)
+		return redirect('/')
+	else:
+		return render(request, 'error.html', {'message': '用户名或者密码不正确'})
 
 
 def get_datas_from_cache(blog_content_type):
@@ -41,6 +56,7 @@ def get_datas_from_cache(blog_content_type):
 	if not yesterday_hot_data:
 		yesterday_hot_data = get_yesterday_hot_data(blog_content_type)
 		cache.set('yesterday_hot_data', yesterday_hot_data, 60 * 60 * 24)
+	yesterday_hot_data = get_yesterday_hot_data(blog_content_type)
 
 	# 7天热门博客缓存数据
 	seven_days_hot_data = cache.get('seven_days_hot_data')

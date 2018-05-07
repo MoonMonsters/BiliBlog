@@ -67,7 +67,9 @@ def get_today_hot_data(content_type):
 
 def get_yesterday_hot_data(content_type):
 	today = timezone.now().date()
+	print('today = ', today)
 	yesterday = today - datetime.timedelta(days=1)
+	print('yesterday = ', yesterday)
 	read_details = ReadDetail.objects.filter(content_type=content_type, date=yesterday).order_by('-read_num')
 
 	return read_details[:7]

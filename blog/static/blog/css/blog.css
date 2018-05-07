@@ -17,8 +17,8 @@ div.blog p.blog-info {
 }
 
 ul.blog-info-description {
-    list-style: none;
-    margin-bottom: 2em;
+    list-style-type: none;
+    margin-bottom: 1em;
 }
 
 ul.blog-info-description li {
