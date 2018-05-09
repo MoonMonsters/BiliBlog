@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.contrib import auth
+from django.urls import reverse
 
 from read_statistics.utils import get_seven_days_read_data, get_today_hot_data, get_yesterday_hot_data, \
 	get_7_days_hot_blogs, get_30_days_hot_blogs
@@ -33,13 +34,16 @@ def login(request):
 	# 从request中获得username和password
 	username = request.POST.get('username', None)
 	password = request.POST.get('password', None)
+	# 获取之前的页面，如果没有，则返回到首页
+	# 通过reverse方法解析home链接
+	referer = request.META.get('HTTP_REFERER', reverse('home'))
 	# 使用auth模块进行username和password验证
 	user = auth.authenticate(request, username=username, password=password)
 	# 如果登录成功，则会返回user对象
 	if user is not None:
 		# 登录，在request中会保存user对象，在网页中可以使用
 		auth.login(request, user)
-		return redirect('/')
+		return redirect(referer)
 	else:
 		return render(request, 'error.html', {'message': '用户名或者密码不正确'})
 

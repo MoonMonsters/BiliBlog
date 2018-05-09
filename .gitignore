@@ -1,1 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
+db.sqlite3
+BiliBlog/settings.py
+media

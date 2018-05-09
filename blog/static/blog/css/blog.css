@@ -27,7 +27,8 @@ ul.blog-info-description li {
 }
 
 div.blog-content {
-    text-indent: 2em;
+    line-height: 25px;
+    letter-spacing: 2px;
 }
 
 div.pagination {
@@ -36,4 +37,14 @@ div.pagination {
 
 div.blog-more {
     margin-top: 1em;
+}
+
+div.comment-area {
+    margin-top: 2em;
+
+}
+
+h3.comment-area-title {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.4em;
 }
