@@ -60,14 +60,9 @@
                         </form>
                     {% else %}
                         未登录，登录之后可评论
-                        <form action="{% url 'login' %}" method="post">
-                            {% csrf_token %}
-                            <span>用户名: </span>
-                            <input type="text" name="username"/>
-                            <span>密码: </span>
-                            <input type="password" name="password"/>
-                            <input type="submit" value="登录">
-                        </form>
+                        <a href="{% url 'login' %}?from={{ request.get_full_path }}" class="btn primary">登录</a>
+                        <span>OR</span>
+                        <a href="{% url 'register' %}" class="btn danger">注册</a>
                     {% endif %}
                 </div>
                 <div class="comment-area" style="margin-bottom: 10em">
