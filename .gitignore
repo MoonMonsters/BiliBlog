@@ -1,4 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
 db.sqlite3
-BiliBlog/settings.py
 media
+comment/__pycache__/forms.cpython-36.pyc
+BiliBlog/__pycache__/settings.cpython-36.pyc
+BiliBlog/__pycache__/views.cpython-36.pyc
+blog/__pycache__/views.cpython-36.pyc
+comment/__pycache__/views.cpython-36.pyc

@@ -97,7 +97,7 @@ def get_datas_from_cache(blog_content_type):
 	yesterday_hot_data = cache.get('yesterday_hot_data')
 	if not yesterday_hot_data:
 		yesterday_hot_data = get_yesterday_hot_data(blog_content_type)
-		cache.set('yesterday_hot_data', yesterday_hot_data, 60 * 60 * 24)
+		cache.set('yesterday_hot_data', yesterday_hot_data, 60 * 60 * 12)
 	yesterday_hot_data = get_yesterday_hot_data(blog_content_type)
 
 	# 7天热门博客缓存数据

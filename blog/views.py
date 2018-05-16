@@ -7,6 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from .models import BlogType, Blog
 from read_statistics.utils import read_statistics_once_read
 from comment.models import Comment
+from comment.forms import CommentForm
 
 
 def blogs_common_data(request, blogs):
@@ -78,6 +79,12 @@ def blog_detail(request, blog_pk):
 	context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()
 	# 传到html中
 	context['comments'] = comments
+	data = dict()
+	data['content_type'] = blog_content_type.model
+	data['object_id'] = blog_pk
+	data['user'] = request.user
+	# 创建时CommentForm对象时，同事传入初始数据
+	context['comment_form'] = CommentForm(initial=data)
 	# context['user'] = request.user
 	response = render(request, 'blog/blog_detail.html', context)
 	# 将文章是否已读写入cookie中，避免频繁刷新增加阅读记录
