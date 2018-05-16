@@ -6,3 +6,4 @@ BiliBlog/__pycache__/settings.cpython-36.pyc
 BiliBlog/__pycache__/views.cpython-36.pyc
 blog/__pycache__/views.cpython-36.pyc
 comment/__pycache__/views.cpython-36.pyc
+.idea/workspace.xml
