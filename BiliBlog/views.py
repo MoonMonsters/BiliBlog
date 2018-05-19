@@ -60,8 +60,11 @@ def login(request):
 			return redirect(request.GET.get('from', reverse('home')))
 	else:
 		login_form = LoginForm()
+	referer = request.META.get('HTTP_REFERER', reverse('home'))
+	# referer = request.GET.get('from', reverse('home'))
 	context = dict()
 	context['login_form'] = login_form
+	context['referer'] = referer
 	return render(request, 'login.html', context=context)
 
 

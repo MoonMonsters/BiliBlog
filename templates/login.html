@@ -10,7 +10,7 @@
 {% endblock nav_home_active %}
 
 {% block content %}
-    <div class="containter">
+    <div class="container">
         <div class="row">
             <div class="col-xs-4 col-xs-offset-4">
                 <div class="panel panel-default">
@@ -18,7 +18,7 @@
                         <h3 class="panel-title">登录</h3>
                     </div>
                     <div class="panel-body">
-                        <form action="{% url 'login' %}" method="post">
+                        <form action="{% url 'login' %}?from={{ referer }}" method="post">
                             {% csrf_token %}
                             {% for field in login_form %}
                                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -34,5 +34,4 @@
             </div>
         </div>
     </div>
-
 {% endblock content %}
