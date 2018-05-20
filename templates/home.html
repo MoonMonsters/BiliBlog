@@ -17,72 +17,23 @@
 {% block content %}
     {# 图表来源：https://www.hcharts.cn/docs/basic-series #}
     <!-- 图表容器 DOM -->
-    <h3 class="home-content">欢迎访问我的博客网站</h3>
-    <div id="container" style="width: 600px;height:400px;"></div>
-    <div class="hot-data">
-        <!-- 今天24小时内的热门博客 -->
-        <h3 class="hot_data_title">今天热门点击</h3>
-        <ul>
-            {% for hot_data in today_hot_data %}
-                <li>
-                    <a href="{% url 'blog_detail' hot_data.object_id %}">{{ hot_data.content_object.title }}</a>
-                </li>
-            {% empty %}
-                <li>今天暂无热门博客</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="hot-data">
-        <h3>昨天热门点击</h3>
-        <ul>
-            {% for yesterday_data in yesterday_hot_data %}
-                <li>
-                    <a href="{% url 'blog_detail' yesterday_data.object_id %}">{{ yesterday_data.content_object.title }}</a>
-                </li>
-            {% empty %}
-                <li>昨天暂无热门博客</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="hot-data">
-        <h3>七天内热门点击</h3>
-        <ul>
-            {% for hot_data in seven_days_hot_data %}
-                <li>
-                    <a href="{% url 'blog_detail' hot_data.id %}">{{ hot_data.title }}</a>
-                </li>
-            {% empty %}
-                <li>今天暂无热门博客</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="hot-data">
-        <h3>三十天内热门点击</h3>
-        <ul>
-            {% for hot_data in thirty_days_hot_data %}
-                <li>
-                    <a href="{% url 'blog_detail' hot_data.id %}">{{ hot_data.title }}</a>
-                </li>
-            {% empty %}
-                <li>今天暂无热门博客</li>
-            {% endfor %}
-        </ul>
-    </div>
+    {#    <h3 class="home-content">欢迎访问我的博客网站</h3>#}
+    <div id="container" style="width:1000px;height:600px;"></div>
 
     <script>
         // 图表配置
         var options = {
             chart: {type: 'line'},
-            title: {text: null},
+            title: {text: '欢迎访问我的博客网站', style: {fontSize: '30px'}},
             xAxis: {
                 categories: {{ dates|safe }},   // x 轴分类
                 tickmarkPlacement: 'on',
-                title: {text: '前七日阅读量'}
+                title: {text: '前十日阅读量', style: {'fontSize': '18px'},margin:20}
             },
             yAxis: {
                 title: {text: null},
                 labels: {enabled: false},
-                gridLineDashStyle: 'Dash',
+                gridLineDashStyle: 'Dash'
             },
             series: [{                              // 数据列
                 name: '阅读量',                        // 数据列名
@@ -96,7 +47,7 @@
                 }
             },
             legend: {enabled: false},
-            credits: {enabled: false},
+            credits: {enabled: false}
         };
         // 图表初始化函数
         var chart = Highcharts.chart('container', options);

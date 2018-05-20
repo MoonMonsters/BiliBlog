@@ -19,13 +19,10 @@ def home(request):
 	# 得到每天中每天博客的阅读量以及对应的时间
 	read_nums, dates = get_seven_days_read_data(blog_content_type)
 
-	context = {}
+	context = dict()
 	# 传到html中
 	context['read_nums'] = read_nums
 	context['dates'] = dates
-	context['today_hot_data'], context['yesterday_hot_data'], context['seven_days_hot_data'], context[
-		'thirty_days_hot_data'] = \
-		get_datas_from_cache(blog_content_type)
 	return render(request, 'home.html', context)
 
 
@@ -87,35 +84,3 @@ def register(request):
 	context = dict()
 	context['register_form'] = register_form
 	return render(request, 'register.html', context=context)
-
-
-def get_datas_from_cache(blog_content_type):
-	# 今天热门博客排行，一个小时更新一次
-	today_hot_data = cache.get('today_hot_data')
-	if not today_hot_data:
-		today_hot_data = get_today_hot_data(blog_content_type)
-		cache.set('today_hot_data', today_hot_data, 60 * 60)
-
-	# 昨天热门博客缓存
-	yesterday_hot_data = cache.get('yesterday_hot_data')
-	if not yesterday_hot_data:
-		yesterday_hot_data = get_yesterday_hot_data(blog_content_type)
-		cache.set('yesterday_hot_data', yesterday_hot_data, 60 * 60 * 12)
-	yesterday_hot_data = get_yesterday_hot_data(blog_content_type)
-
-	# 7天热门博客缓存数据
-	seven_days_hot_data = cache.get('seven_days_hot_data')
-	# 如果缓存数据为空
-	if not seven_days_hot_data:
-		# 得到数据
-		seven_days_hot_data = get_7_days_hot_blogs()
-		# 并写入缓存，以及设置缓存时间，以秒为单位
-		# 缓存到期后，便会自动删除缓存，然后便会为None了
-		cache.set('seven_days_hot_data', seven_days_hot_data, 60 * 60 * 24)
-	# 30天热门博客缓存
-	thirty_days_hot_data = cache.get('thirty_days_hot_data')
-	if not thirty_days_hot_data:
-		thirty_days_hot_data = get_30_days_hot_blogs()
-		cache.set('thirty_days_hot_data', thirty_days_hot_data, 60 * 60 * 24)
-
-	return today_hot_data, yesterday_hot_data, seven_days_hot_data, thirty_days_hot_data

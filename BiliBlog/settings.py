@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['moonmonsters.pythonanywhere.com', '127.0.0.1']
 
 # Application definition
-
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 INSTALLED_APPS = [
 	'django.contrib.admin',
 	'django.contrib.auth',
@@ -168,3 +169,21 @@ CACHES = {
 		'LOCATION': 'my_cache_table',
 	}
 }
+
+
+def get_total_seconds_from_now():
+	import datetime
+	now = datetime.datetime.now()
+	start = datetime.datetime(year=2018, month=10, day=10, hour=now.hour, minute=now.minute, second=now.second)
+	end = datetime.datetime(year=2018, month=10, day=10, hour=23, minute=0, second=0)
+	return (end - start).total_seconds()
+
+
+# 今日热门博客缓存时间
+CACHE_TIME_TODAY = 60 * 60
+# 昨日
+CACHE_TIME_YESTERDAY = get_total_seconds_from_now()
+# 七天
+CACHE_TIME_SEVEN_DAY = get_total_seconds_from_now()
+# 三十天
+CACHE_TIME_THIRTY_DAY = get_total_seconds_from_now()

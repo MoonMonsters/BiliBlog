@@ -35,6 +35,19 @@
             <ul class="nav navbar-nav">
                 <li class="{% block nav_home_active %}{% endblock %}"><a href="{% url 'home' %}">首页</a></li>
                 <li class="{% block nav_blog_active %}{% endblock %}"><a href="{% url 'blog_list' %}">博客</a></li>
+                <li class="dropdown;{% block nav_hot_active %}{% endblock %}">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        热门 <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'blog_hot' 0 %}">今日</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{% url 'blog_hot' 1 %}">昨日</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{% url 'blog_hot' 2 %}">前7天</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{% url 'blog_hot' 3 %}">前30天</a></li>
+                    </ul>
             </ul>
         </div>
     </div>

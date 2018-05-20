@@ -1,5 +1,5 @@
 h3.home-content {
-    font-size: 222%;
+    font-size: 200%;
     text-align: center;
     margin-top: 4em;
     margin-bottom: 2em;
@@ -9,10 +9,5 @@ div#container {
     margin: 0 auto;
     height: 20em;
     min-width: 20em;
-    max-width: 30em;
-}
-
-div.hot-data {
-    text-align: center;
-    margin-top: 2em;
+    /*max-width: 30em;*/
 }

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}
+    热门博客
+{% endblock title %}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="{% static 'css/blog/blog.css' %}">
+{% endblock header_extends %}
+
+{% block nav_hot_active %}
+    active
+{% endblock nav_hot_active %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {{ hot_type }}
+                    </div>
+                    <div class="panel-body">
+                        {% for blog in hot_datas %}
+                            <div class="blog">
+                                <a href="{% url 'blog_detail' blog.pk %}">   {# blog.pk #}
+                                    <h3>{{ blog.title }}</h3>
+                                </a>
+                                <p class="blog-info">
+                                    <span class="glyphicon glyphicon-tag"></span> <a
+                                        {#                                        blog.blog_type.pk#}
+                                        href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{ blog.blog_type.type_name }}</a>&nbsp;&nbsp;
+                                    <span class="glyphicon glyphicon-time"></span> {{ blog.created_time|date }}&nbsp;&nbsp;
+                                    阅读({{ blog.get_read_num }})
+                                </p>
+                                <p>{{ blog.content|safe|striptags|truncatechars:120 }}</p>
+                            </div>
+                        {% empty %}
+                            <div class="blog">
+                                <h3>--暂无博客，敬请期待--</h3>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
