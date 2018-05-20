@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Created by Flynn on 2018-04-07 17:46
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib.contenttypes.models import ContentType
-from django.core.cache import cache
 from django.contrib import auth
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
-from read_statistics.utils import get_seven_days_read_data, get_today_hot_data, get_yesterday_hot_data, \
-	get_7_days_hot_blogs, get_30_days_hot_blogs
+from read_statistics.utils import get_ten_days_read_data_to_charts
 from blog.models import Blog
 from .forms import LoginForm, RegisterForm
 
@@ -17,7 +16,7 @@ from .forms import LoginForm, RegisterForm
 def home(request):
 	blog_content_type = ContentType.objects.get_for_model(Blog)
 	# 得到每天中每天博客的阅读量以及对应的时间
-	read_nums, dates = get_seven_days_read_data(blog_content_type)
+	read_nums, dates = get_ten_days_read_data_to_charts(blog_content_type)
 
 	context = dict()
 	# 传到html中
@@ -84,3 +83,11 @@ def register(request):
 	context = dict()
 	context['register_form'] = register_form
 	return render(request, 'register.html', context=context)
+
+
+# 强制认证，只有当登录时调用才有效
+@login_required
+def logout(request):
+	auth.logout(request)
+
+	return HttpResponseRedirect('/')

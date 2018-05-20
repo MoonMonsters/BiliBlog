@@ -152,7 +152,7 @@ def get_datas_from_cache(blog_content_type, type):
 		if not yesterday_hot_data:
 			yesterday_hot_data = get_yesterday_hot_data(blog_content_type)
 			cache.set('yesterday_hot_data', yesterday_hot_data, settings.CACHE_TIME_YESTERDAY)
-			hot_type = '昨日热门博客'
+		hot_type = '昨日热门博客'
 		hot_datas = [Blog.objects.get(pk=read_detail.object_id) for read_detail in yesterday_hot_data]
 	elif type == 2:
 		# 7天热门博客缓存数据

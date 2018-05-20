@@ -36,7 +36,7 @@ def read_statistics_once_read(request, obj):
 	return key
 
 
-def get_seven_days_read_data(content_type):
+def get_ten_days_read_data_to_charts(content_type):
 	# 得到当前时间
 	today = timezone.now().date()
 	# 每天的博客阅读总量

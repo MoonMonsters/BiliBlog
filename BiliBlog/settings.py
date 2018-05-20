@@ -187,3 +187,7 @@ CACHE_TIME_YESTERDAY = get_total_seconds_from_now()
 CACHE_TIME_SEVEN_DAY = get_total_seconds_from_now()
 # 三十天
 CACHE_TIME_THIRTY_DAY = get_total_seconds_from_now()
+
+# 当@login_required不生效后，会自动调用LOGIN_URL跳转
+# 该部分填写相对的URL即可，不用跟上具体的页面
+LOGIN_URL = '/login/'
