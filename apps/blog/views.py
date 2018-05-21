@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
-from django.conf import settings
 from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
@@ -43,17 +42,24 @@ def blogs_common_data(request, blogs):
 		page_range.append(paginator.num_pages)
 
 	blog_dates = Blog.objects.dates('created_time', 'month', order='DESC')
+	print('blog_dates = ', blog_dates)
 	blog_dates_dict = {}
 	for blog_date in blog_dates:
+		# 按照年份和月份过滤Blog数据并且分组计算数量
 		blog_count = Blog.objects.filter(created_time__year=blog_date.year,
 		                                 created_time__month=blog_date.month).count()
 		blog_dates_dict[blog_date] = blog_count
 
-	context = {}
-	# context['blogs'] = page_of_blogs.object_list
+	context = dict()
+	# 页数列表
 	context['page_range'] = page_range
+	# 每页数据
 	context['page_of_blogs'] = page_of_blogs
+	# 聚合
+	# 得到BlogType的QuerySet对象，<QuerySet [<BlogType: 感悟>, <BlogType: 随笔>, <BlogType: Django>]>
+	# 使用对象，例如 q[0].blog_count可以得到 感悟 类型中，blog的数量
 	context['blog_types'] = BlogType.objects.annotate(blog_count=Count('blog'))
+	# 得到按照时间分类的每个时间点的数据
 	context['blog_dates'] = blog_dates_dict
 
 	return context
@@ -105,15 +111,24 @@ def blogs_with_type(request, blog_type_pk):
 	context = blogs_common_data(request, blogs_all)
 	# context['blogs'] = page_of_blogs.object_list
 	context['blog_type'] = blog_type
+
+	for index, bt in enumerate(context['blog_types']):
+		if bt == blog_type:
+			# 得到每种类型博客数量
+			context['blog_every_type_count'] = context['blog_types'][index].blog_count
+			break
+	else:
+		# 如果出意外，则设置为0
+		context['blog_every_type_count'] = 0
+
 	return render(request, 'blog/blogs_with_type.html', context)
 
 
 def blogs_with_date(request, year, month):
+	# 根据年月得到所有博客
 	blogs_all = Blog.objects.filter(created_time__year=year, created_time__month=month)
 	context = blogs_common_data(request, blogs_all)
-	# context['blogs'] = page_of_blogs.object_list
-	context['blog_dates'] = Blog.objects.dates('created_time', 'month', order='DESC')
-	# context['blogs_count'] = Blog.objects.all().count()
+	# context['blog_dates'] = Blog.objects.dates('created_time', 'month', order='DESC')
 	context['blogs_with_date'] = '%s年%s月' % (year, month)
 	return render(request, 'blog/blogs_with_date.html', context)
 

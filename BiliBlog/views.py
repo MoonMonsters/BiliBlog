@@ -76,7 +76,10 @@ def register(request):
 			user.save()
 
 			user = auth.authenticate(username=username, password=password)
+			# 注册成功后，设置成登录成功
 			auth.login(request, user)
+
+			return HttpResponseRedirect('/')
 	else:
 		register_form = RegisterForm()
 
