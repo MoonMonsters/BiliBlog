@@ -24,6 +24,14 @@
                     <li>阅读({{ blog.get_read_num }})</li>
                 </ul>
                 <div class="blog-content">{{ blog.content|safe }}</div>
+                <div style="text-align: right;margin-top:30px;margin-bottom:20px;margin-right:20px">
+                    <span onclick="do_like({{ blog.pk }})" id="blog_like">
+                            {# blog_like_active由view.blog_detail中传递过来，如果登录用户没有点赞过该博客，则显示为空心 #}
+                            <span id="blog_like_icon"
+                                  class="glyphicon glyphicon-heart{% if not blog_like_active %}-empty{% endif %} btn btn-lg"></span>
+                    </span>
+                    <span id="blog_like_count">{{ blog_like_count }}</span>&nbsp;&nbsp;喜欢
+                </div>
                 <div class="blog-more">
                     <p>上一篇:
                         {% if previous_blog %}
@@ -103,7 +111,7 @@
                 data: $(this).serialize(),
                 cache: false,
                 success: function (data) {
-                    console.log(data);
+                    {#console.log(data);#}
                     {# 插入数据 #}
                     if (data['status'] === 'SUCCESS') {
                         var comment_html = '<div>' + data['username'] + ' (' + data['comment_time'] + '): ' + data['text'];
@@ -113,7 +121,6 @@
                     } else {
                         $("#comment_error").text(data['message']);
                     }
-
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -121,5 +128,37 @@
             });
             return false;
         });
+
+        function do_like(blog_id) {
+
+            $.ajax({
+                url: "{% url 'blog_like' %}",
+                type: 'GET',
+                data: {
+                    'blog_id': blog_id
+                },
+                cache: false,
+                success: function (data) {
+                    if (data['status'] === 'ERROR') {
+                        alert(data['description'])
+                    }
+                    if (data['status'] === 'SUCCESS') {
+                        blog_like_count = $('#blog_like_count').text();
+                        if (data['type'] === 'like') {
+                            $('#blog_like_count').text(parseInt(blog_like_count) + 1);
+                            $('#blog_like_icon').removeClass('glyphicon glyphicon-heart-empty');
+                            $('#blog_like_icon').addClass('glyphicon glyphicon-heart');
+                        } else if (data['type'] === 'unlike') {
+                            $('#blog_like_count').text(parseInt(blog_like_count) - 1);
+                            $('#blog_like_icon').addClass('glyphicon glyphicon-heart-empty');
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    alert('请先登录')
+                }
+            })
+        }
+
     </script>
 {% endblock script_extents %}

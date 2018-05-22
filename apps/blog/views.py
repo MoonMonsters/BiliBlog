@@ -11,6 +11,7 @@ from comment.models import Comment
 from comment.forms import CommentForm
 from read_statistics.utils import get_today_hot_data, get_yesterday_hot_data, \
 	get_7_days_hot_blogs, get_30_days_hot_blogs
+from like.models import BlogLike
 
 
 def blogs_common_data(request, blogs):
@@ -96,6 +97,9 @@ def blog_detail(request, blog_pk):
 	data['user'] = request.user
 	# 创建时CommentForm对象时，同事传入初始数据
 	context['comment_form'] = CommentForm(initial=data)
+	# 从request中读取到user数据，并结合博客id，判断登录用户是否对这篇博客点赞了
+	context['blog_like_active'] = BlogLike.objects.filter(blog_id=blog_pk, user=request.user).exists()
+	context['blog_like_count'] = BlogLike.objects.filter(blog_id=blog_pk).count()
 	# context['user'] = request.user
 	response = render(request, 'blog/blog_detail.html', context)
 	# 将文章是否已读写入cookie中，避免频繁刷新增加阅读记录
