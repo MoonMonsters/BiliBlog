@@ -97,8 +97,9 @@ def blog_detail(request, blog_pk):
 	data['user'] = request.user
 	# 创建时CommentForm对象时，同事传入初始数据
 	context['comment_form'] = CommentForm(initial=data)
-	# 从request中读取到user数据，并结合博客id，判断登录用户是否对这篇博客点赞了
-	context['blog_like_active'] = BlogLike.objects.filter(blog_id=blog_pk, user=request.user).exists()
+	if request.user.is_authenticated:
+		# 从request中读取到user数据，并结合博客id，判断登录用户是否对这篇博客点赞了
+		context['blog_like_active'] = BlogLike.objects.filter(blog_id=blog_pk, user=request.user).exists()
 	context['blog_like_count'] = BlogLike.objects.filter(blog_id=blog_pk).count()
 	# context['user'] = request.user
 	response = render(request, 'blog/blog_detail.html', context)

@@ -8,5 +8,4 @@ blog/__pycache__/views.cpython-36.pyc
 comment/__pycache__/views.cpython-36.pyc
 BiliBlog/__pycache__/urls.cpython-36.pyc
 .idea/workspace.xml
-apps/like/__init__.py
 apps/like/__pycache__/
