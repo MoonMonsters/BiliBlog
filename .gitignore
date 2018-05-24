@@ -1,5 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
-db.sqlite3
 media
 comment/__pycache__/forms.cpython-36.pyc
 BiliBlog/__pycache__/settings.cpython-36.pyc

@@ -83,7 +83,7 @@
                                 {{ comment.text|safe }}
                             </div>
                         {% empty %}
-                            暂无评论
+                            <span id="no_comment">暂无评论</span>
                         {% endfor %}
                     </div>
                 </div>
@@ -118,6 +118,7 @@
                         $("#comment_list").prepend(comment_html);
                         {#清空编辑框#}
                         CKEDITOR.instances['id_text'].setData('');
+                        $("#no_comment").style.visibility = 'hidden'
                     } else {
                         $("#comment_error").text(data['message']);
                     }

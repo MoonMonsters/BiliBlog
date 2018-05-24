@@ -8,6 +8,7 @@
     {#根据屏幕自动相应布局大小#}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock title %}</title>
+    <link rel="shortcut icon" href="{% static 'net_icon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     {#jquery要放在bootstrap之前#}
@@ -22,7 +23,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="{% url 'home' %}">
-                个人博客网站
+                MoonMonster's Blog
             </a>
         </div>
 
