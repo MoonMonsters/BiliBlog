@@ -37,6 +37,8 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 
+	'rest_framework',
+
 	'ckeditor',
 	'ckeditor_uploader',
 
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
 	'read_statistics',
 	'comment',
 	'like',
+	'api',
 ]
 
 MIDDLEWARE = [
