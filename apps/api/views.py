@@ -115,7 +115,9 @@ class NewCommentListApiView(generics.RetrieveAPIView):
 	def get(self, request, *args, **kwargs):
 		# 判断用户是否登录
 		if request.user.is_authenticated:
-			NewCommentCount.objects.get(user=request.user).clear_count()
+			ncc = NewCommentCount.objects.filter(user=request.user)
+			if ncc.exists():
+				ncc.clear_count()
 		serializer = NewCommentListSerializer(self.get_queryset(), many=True)
 		# 根据访问路径，返回json格式数据
 		if request.path == '/api/newcommentlist/json/':

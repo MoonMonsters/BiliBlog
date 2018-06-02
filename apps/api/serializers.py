@@ -47,7 +47,6 @@ class NewCommentListSerializer(serializers.ModelSerializer):
 		fields = ['blog_id', 'comment_user', 'comment_time', 'blog_title', 'comment_content']
 
 	def get_comment_user(self, obj):
-		print('obj = ', obj)
 		return obj.user.username
 
 	def get_blog_title(self, obj):
