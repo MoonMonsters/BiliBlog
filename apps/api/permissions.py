@@ -18,7 +18,7 @@ class IsOwnerWriteOnly(permissions.BasePermission):
 		if request.method in permissions.SAFE_METHODS:
 			return True
 
-		return obj.owner.id == request.session.get('user_id')
+		return obj.owner.id == request.user.id
 
 	def has_permission(self, request, view):
 		"""
@@ -26,4 +26,4 @@ class IsOwnerWriteOnly(permissions.BasePermission):
 		"""
 		if request.method in permissions.SAFE_METHODS:
 			return True
-		return request.session.get('user_id') is not None
+		return request.user.is_authenticated

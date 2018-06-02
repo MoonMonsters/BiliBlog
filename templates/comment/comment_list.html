@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block header_extends %}
+{% endblock header_extends %}
+
+{% block title %}
+    评论列表
+{% endblock title %}
+
+{% block nav_blog_active %}
+    active
+{% endblock nav_blog_active %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+                <div class="panel panel-default">
+                    <div class="panel-heading">收到的评论列表</div>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            {% for comment in comments %}
+                                <span style="font-size: 18px;color: blue">{{ comment.comment_user }}</span>&nbsp;评论了您的文章
+                                &nbsp;
+                                <a href="{% url 'blog_detail' comment.blog_id %}"
+                                   style="text-decoration: underline">{{ comment.blog_title|truncatewords:20 }}</a>
+                                &nbsp;
+                                <span style="float: right;margin-right:20px">{{ comment.comment_time }}</span><br/><br/>
+                                {{ comment.comment_content|safe }}
+                                <hr/>
+                            {% empty %}
+                                <span>暂无评论</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div style="float: right;margin: 30px">
+                        <a href="{% url 'new_comment_list' %}?page={{ cur_page|add:-1 }}"
+                           style="margin-right: 50px;">上一页</a>
+                        <a href="{% url 'new_comment_list' %}?page={{ cur_page|add:1 }}">下一页</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content %}

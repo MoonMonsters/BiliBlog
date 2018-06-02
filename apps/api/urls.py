@@ -10,4 +10,7 @@ from api import views
 urlpatterns = [
 	path('hotblog/', views.HotBlogListView.as_view(), name='hot_blog'),
 	path('blogdetail/', views.BlogDetailAPIView.as_view(), name='blog_detail'),
+	path('newcommentcount/', views.NewCommentCountAPIView.as_view(), name='new_comment_count'),
+	path('newcommentlist/', views.NewCommentListApiView.as_view(), name='new_comment_list'),
+	path('newcommentlist/json/', views.NewCommentListApiView.as_view()),
 ]

@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Created by Flynn on 2018-06-02 11:11
-
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 
 from blog.models import Blog
+from comment.models import Comment
 
 
 class BlogSerializer(serializers.ModelSerializer):
@@ -32,3 +33,32 @@ class BlogSerializer(serializers.ModelSerializer):
 		"""
 		import datetime
 		return datetime.datetime.strftime(obj.last_update_time, '%Y-%m-%d %H:%M')
+
+
+class NewCommentListSerializer(serializers.ModelSerializer):
+	comment_user = serializers.SerializerMethodField(source='get_comment_user')
+	blog_title = serializers.SerializerMethodField(source='get_blog_title')
+	comment_content = serializers.SerializerMethodField(source='get_comment_content')
+	blog_id = serializers.ReadOnlyField(source='object_id')
+	comment_time = serializers.SerializerMethodField(source='get_comment_time')
+
+	class Meta:
+		model = Comment
+		fields = ['blog_id', 'comment_user', 'comment_time', 'blog_title', 'comment_content']
+
+	def get_comment_user(self, obj):
+		print('obj = ', obj)
+		return obj.user.username
+
+	def get_blog_title(self, obj):
+		return Blog.objects.get(id=obj.object_id).title
+
+	def get_comment_content(self, obj):
+		return obj.text
+
+	def get_comment_time(self, obj):
+		"""
+		格式化时间
+		"""
+		import datetime
+		return datetime.datetime.strftime(obj.comment_time, '%Y-%m-%d %H:%M')

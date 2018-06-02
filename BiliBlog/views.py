@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from read_statistics.utils import get_ten_days_read_data_to_charts
 from blog.models import Blog
 from .forms import LoginForm, RegisterForm
+from comment.models import NewCommentCount
 
 
 def home(request):
@@ -22,6 +23,7 @@ def home(request):
 	# 传到html中
 	context['read_nums'] = read_nums
 	context['dates'] = dates
+
 	return render(request, 'home.html', context)
 
 

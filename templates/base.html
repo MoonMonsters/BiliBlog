@@ -52,15 +52,51 @@
                     <li><a href="{% url 'register' %}"><span class="glyphicon glyphicon-registration-mark"></span>
                         注册</a></li>
                 {% else %}
-                    <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>
-                        <b>{{ user.username }}</b></a>
+                    <li class=" dropdown-toggle" data-toggle="dropdown" id="user_more_info"
+                        onclick="do_click_user_more_info()">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-user"></span>
+                            <b>{{ user.username }}</b>
+                            <span class="caret"></span>
+                        </a>
                     </li>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="{% url 'new_comment_list' %}?page=0">
+                                <span class="glyphicon glyphicon-fire"></span>
+                                <span style="margin-left: 5px;">消息&nbsp;<span id="new_comment_count"></span></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'logout' %}">
+                                <span class="glyphicon glyphicon-log-out"></span>
+                                <span style="margin-left: 5px;">退出</span>
+                            </a>
+                        </li>
+                    </ul>
                 {% endif %}
             </ul>
         </div>
     </div>
 </div>
 {% block content %}{% endblock content %}
-{% block script_extents %}{% endblock script_extents %}
+{% block script_extents %}
+    <script type="text/javascript">
+        {#  点击用户名时，弹出下拉菜单，在此时通过ajax向服务器请求未读数据  #}
+
+        function do_click_user_more_info() {
+            $.ajax({
+                url: "{% url 'new_comment_count' %}",
+                type: 'GET',
+                cache: false,
+                success: function (data) {
+                    if (data['new_comment_count'] !== 0) {
+                        $('#new_comment_count').text('( ' + data['new_comment_count'] + ' )')
+                    }
+                }
+            })
+        }
+    </script>
+{% endblock script_extents %}
 </body>
 </html>

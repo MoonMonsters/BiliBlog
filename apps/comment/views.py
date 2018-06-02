@@ -3,8 +3,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.http import JsonResponse
 
-from .models import Comment
+from .models import Comment, NewCommentCount
 from .forms import CommentForm
+from blog.models import Blog
 
 
 def update_comment(request):
@@ -59,6 +60,14 @@ def update_comment(request):
 		data['username'] = comment.user.username
 		data['comment_time'] = comment.comment_time.strftime('%Y-%m-%d %H:%M:%S')
 		data['text'] = comment.text
+
+		# 从评论的这篇博客中，得到博客的作者
+		user = Blog.objects.get(id=comment.object_id).author
+		# 然后将该条信息保存到博客的作者的表下，而不是评论者的表下
+		new_comment_count, _ = NewCommentCount.objects.get_or_create(user=user)
+		# +1
+		new_comment_count.increase_count()
+
 	# return JsonResponse(data)
 	else:
 		# return render(request, 'error.html', {'message': comment_form.errors, 'redirect_to': referer})

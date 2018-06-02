@@ -7,9 +7,10 @@ from rest_framework import generics
 from rest_framework import status
 
 from blog.models import Blog
-from api.serializers import BlogSerializer
+from api.serializers import BlogSerializer, NewCommentListSerializer
 from utils.hot_blog_util import *
 from api.permissions import IsOwnerWriteOnly
+from comment.models import NewCommentCount, Comment
 
 
 class HotBlogListView(generics.RetrieveAPIView):
@@ -82,3 +83,46 @@ class BlogDetailAPIView(generics.RetrieveDestroyAPIView, generics.CreateAPIView)
 		if is_delete:
 			return Response({'success': '删除成功'}, status=status.HTTP_200_OK)
 		return Response({'error': '删除失败'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class NewCommentCountAPIView(generics.RetrieveAPIView):
+
+	def get(self, request, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return Response({'error': '请求错误'}, status=status.HTTP_400_BAD_REQUEST)
+		new_comment_count = NewCommentCount.objects.filter(user=request.user).first()
+		if new_comment_count:
+			return Response({'new_comment_count': new_comment_count.count}, status=status.HTTP_200_OK)
+		return Response({'new_comment_count': 0}, status=status.HTTP_200_OK)
+
+
+class NewCommentListApiView(generics.RetrieveAPIView):
+	serializer_class = NewCommentListSerializer
+	permission_classes = [IsOwnerWriteOnly, ]
+
+	def get_queryset(self):
+		# 先根据登录用户，得到所有的博客
+		blogs = Blog.objects.filter(author=self.request.user)
+		comments = []
+		# 遍历博客
+		for blog in blogs:
+			# 得到每篇博客的评论
+			comment = Comment.objects.filter(object_id=blog.id)
+			# 添加
+			comments.extend(comment)
+		return comments
+
+	def get(self, request, *args, **kwargs):
+		# 判断用户是否登录
+		if request.user.is_authenticated:
+			NewCommentCount.objects.get(user=request.user).clear_count()
+		serializer = NewCommentListSerializer(self.get_queryset(), many=True)
+		# 根据访问路径，返回json格式数据
+		if request.path == '/api/newcommentlist/json/':
+			return Response(serializer.data, status=status.HTTP_200_OK)
+		# 返回数据到网页中
+		context = dict()
+		page = int(request.GET.get('page', -1))
+		context['comments'] = serializer.data[page * 10:(page + 1) * 10]
+		context['cur_page'] = int(self.request.GET.get('page', -1))
+		return render(request, 'comment/comment_list.html', context=context)
