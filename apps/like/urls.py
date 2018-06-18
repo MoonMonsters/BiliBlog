@@ -6,5 +6,5 @@ from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
-	path('blog/', views.give_blog_a_like, name='blog_like'),
+	path('blog/', views.GiveBlogALike.as_view(), name='blog_like'),
 ]

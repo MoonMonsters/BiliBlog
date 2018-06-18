@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['moonmonsters.pythonanywhere.com', '127.0.0.1']
 
 # Application definition
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 INSTALLED_APPS = [
 	'django.contrib.admin',
 	'django.contrib.auth',
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
 
 	'ckeditor',
 	'ckeditor_uploader',
+	'xadmin',
+	'crispy_forms',
 
 	'blog',
 	'read_statistics',

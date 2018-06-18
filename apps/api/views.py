@@ -117,7 +117,7 @@ class NewCommentListApiView(generics.RetrieveAPIView):
 		if request.user.is_authenticated:
 			ncc = NewCommentCount.objects.filter(user=request.user)
 			if ncc.exists():
-				ncc.clear_count()
+				ncc.first().clear_count()
 		serializer = NewCommentListSerializer(self.get_queryset(), many=True)
 		# 根据访问路径，返回json格式数据
 		if request.path == '/api/newcommentlist/json/':

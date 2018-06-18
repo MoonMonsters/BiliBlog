@@ -23,22 +23,30 @@ class ReadNumExpandMethod(object):
 
 class ReadNum(models.Model):
 	# 每篇博客的阅读量
-	read_num = models.IntegerField(default=0)
+	read_num = models.IntegerField('阅读总数', default=0)
 
 	# 与ContentType建立外键关系
 	# 固定写法
 	content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
-	object_id = models.PositiveIntegerField()
+	object_id = models.PositiveIntegerField('博客ID')
 	content_object = GenericForeignKey('content_type', 'object_id')
+
+	class Meta:
+		verbose_name = '阅读总数'
+		verbose_name_plural = verbose_name
 
 
 class ReadDetail(models.Model):
-	date = models.DateField(default=timezone.now)
+	date = models.DateField('日期', default=timezone.now)
 	# 每天中，每篇博客的阅读量，跟ReadNum还是不同的
-	read_num = models.IntegerField(default=0)
+	read_num = models.IntegerField('某天阅读数', default=0)
 
 	# 与ContentType建立外键关系
 	# 固定写法
 	content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
-	object_id = models.PositiveIntegerField()
+	object_id = models.PositiveIntegerField('博客ID')
 	content_object = GenericForeignKey('content_type', 'object_id')
+
+	class Meta:
+		verbose_name = '日期阅读数'
+		verbose_name_plural = verbose_name
