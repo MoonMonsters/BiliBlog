@@ -13,4 +13,6 @@ urlpatterns = [
 	path('newcommentcount/', views.NewCommentCountAPIView.as_view(), name='new_comment_count'),
 	path('newcommentlist/', views.NewCommentListApiView.as_view(), name='new_comment_list'),
 	path('newcommentlist/json/', views.NewCommentListApiView.as_view()),
+	path('ipsavernumbers/', views.IPSaverNumbersAPIView.as_view(), name='ip_saver_numbers'),
+	path('ipsaverall/', views.IPSaverAllAPIView.as_view(), name='ip_saver_all')
 ]

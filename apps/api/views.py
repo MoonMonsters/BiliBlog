@@ -7,10 +7,11 @@ from rest_framework import generics
 from rest_framework import status
 
 from blog.models import Blog
-from api.serializers import BlogSerializer, NewCommentListSerializer
+from comment.models import NewCommentCount, Comment
+from api.models import IPSaver
+from api.serializers import BlogSerializer, NewCommentListSerializer, IPSaverAllSerializer, IPSaverNumbersSerializer
 from utils.hot_blog_util import *
 from api.permissions import IsOwnerWriteOnly
-from comment.models import NewCommentCount, Comment
 
 
 class HotBlogListView(generics.RetrieveAPIView):
@@ -128,3 +129,27 @@ class NewCommentListApiView(generics.RetrieveAPIView):
 		context['comments'] = serializer.data[page * 10:(page + 1) * 10]
 		context['cur_page'] = int(self.request.GET.get('page', -1))
 		return render(request, 'comment/comment_list.html', context=context)
+
+
+class IPSaverNumbersAPIView(generics.RetrieveAPIView):
+	serializer_class = IPSaverNumbersSerializer
+
+	def get_queryset(self):
+		return IPSaver.objects.values('ip').distinct().order_by('ip')
+
+	def get(self, request, *args, **kwargs):
+		queryset = self.get_queryset()
+		print('IPSaverNumbersAPIView.queryset = ', queryset)
+		serializers = IPSaverNumbersSerializer(queryset, many=True)
+		return Response(serializers.data, status=status.HTTP_200_OK)
+
+
+class IPSaverAllAPIView(generics.RetrieveAPIView):
+	serializer_class = IPSaverAllSerializer
+
+	def get_queryset(self):
+		return IPSaver.objects.all().order_by('-visited_time')
+
+	def get(self, request, *args, **kwargs):
+		serializers = IPSaverAllSerializer(self.get_queryset(), many=True)
+		return Response(serializers.data, status=status.HTTP_200_OK)

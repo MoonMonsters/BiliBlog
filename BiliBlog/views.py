@@ -13,6 +13,8 @@ from blog.models import Blog
 from .forms import LoginForm, RegisterForm
 from comment.models import NewCommentCount
 
+from utils.ip_save_util import save_ip
+
 
 def home(request):
 	blog_content_type = ContentType.objects.get_for_model(Blog)
@@ -23,6 +25,8 @@ def home(request):
 	# 传到html中
 	context['read_nums'] = read_nums
 	context['dates'] = dates
+
+	save_ip(request, -1)
 
 	return render(request, 'home.html', context)
 

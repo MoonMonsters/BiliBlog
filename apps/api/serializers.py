@@ -6,6 +6,25 @@ from rest_framework import serializers
 
 from blog.models import Blog
 from comment.models import Comment
+from api.models import IPSaver
+
+
+class IPSaverAllSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = IPSaver
+		fields = ('ip', 'blog_id', 'visited_time')
+
+
+class IPSaverNumbersSerializer(serializers.ModelSerializer):
+	numbers = serializers.SerializerMethodField(source='get_numbers')
+
+	class Meta:
+		model = IPSaver
+		fields = ('ip', 'numbers')
+
+	def get_numbers(self, obj):
+		ip = obj.get('ip', None)
+		return IPSaver.objects.filter(ip=ip).count()
 
 
 class BlogSerializer(serializers.ModelSerializer):

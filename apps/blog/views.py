@@ -8,6 +8,7 @@ from comment.models import Comment
 from comment.forms import CommentForm
 from like.models import BlogLike
 from utils.hot_blog_util import *
+from utils.ip_save_util import save_ip
 
 
 def blogs_common_data(request, blogs):
@@ -72,6 +73,8 @@ def blog_list(request):
 
 
 def blog_detail(request, blog_pk):
+	save_ip(request, blog_pk)
+
 	blog = get_object_or_404(Blog, pk=blog_pk)
 	# 在博客文章详情页中，取得应该存入cookie中的key值
 	read_cookie_key = read_statistics_once_read(request, blog)
