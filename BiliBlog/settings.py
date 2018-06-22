@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 	'ckeditor_uploader',
 	'xadmin',
 	'crispy_forms',
+	'DjangoUeditor',
 
 	'blog',
 	'read_statistics',

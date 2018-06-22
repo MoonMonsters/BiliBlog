@@ -32,6 +32,7 @@ urlpatterns = [
 	path('api/', include('api.urls')),
 
 	path('ckeditor', include('ckeditor_uploader.urls')),
+	path('ueditor', include('DjangoUeditor.urls')),
 	path('login/', views.login, name='login'),
 	path('register/', views.register, name='register'),
 	path('logout/', views.logout, name='logout'),

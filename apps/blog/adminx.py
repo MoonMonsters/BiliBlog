@@ -13,6 +13,7 @@ class BlogAdmin(object):
 	list_display = ['title', 'author', 'blog_type', 'created_time', 'last_update_time']
 	list_filter = ['title', 'author', 'blog_type', 'created_time', 'last_update_time']
 	search_fields = ['title', 'author', 'blog_type']
+	style_fields = {'content': 'ueditor'}
 
 
 class BlogTypeAdmin(object):

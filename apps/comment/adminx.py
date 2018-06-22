@@ -12,6 +12,7 @@ class CommentAdmin(object):
 	list_display = ['object_id', 'comment_time', 'user']
 	search_fields = ['object_id', 'user']
 	list_filter = ['object_id', 'comment_time', 'user']
+	style_fields = {'text': 'ueditor'}
 
 
 class NewCommentCountAdmin(object):
