@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 import xadmin
+from captcha import views as captcha_views
 
 from . import views
 
@@ -30,12 +31,13 @@ urlpatterns = [
 	path('comment/', include('comment.urls')),
 	path('like/', include('like.urls')),
 	path('api/', include('api.urls')),
-
-	path('ckeditor', include('ckeditor_uploader.urls')),
-	path('ueditor', include('DjangoUeditor.urls')),
 	path('login/', views.login, name='login'),
 	path('register/', views.register, name='register'),
 	path('logout/', views.logout, name='logout'),
+
+	path('ckeditor/', include('ckeditor_uploader.urls')),
+	path('ueditor/', include('DjangoUeditor.urls')),
+	path('captcha/', include('captcha.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

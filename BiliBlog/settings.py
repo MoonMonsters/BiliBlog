@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 	'xadmin',
 	'crispy_forms',
 	'DjangoUeditor',
+	'captcha',
 
 	'blog',
 	'read_statistics',
