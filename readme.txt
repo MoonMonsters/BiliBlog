@@ -17,3 +17,11 @@ type = 3时返回前1个月热门博客
 4.
 127.0.0.1:8000/api/newcommentcount/json/
 返回登录用户所有博客的所有评论
+
+5.
+http://moonmonsters.pythonanywhere.com/api/ipsavernumbers/
+获取每个IP地址的访问量
+
+6.
+http://moonmonsters.pythonanywhere.com/api/ipsaverall/
+获取所有的访问记录
