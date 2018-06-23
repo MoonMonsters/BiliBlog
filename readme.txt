@@ -20,7 +20,7 @@ http://moonmonsters.pythonanywhere.com/api/newcommentcount/json/
 
 5.
 http://moonmonsters.pythonanywhere.com/api/ipsavernumbers/
-获取每个IP地址的访问量
+获取每个IP地址的访问次数
 
 6.
 http://moonmonsters.pythonanywhere.com/api/ipsaverall/
