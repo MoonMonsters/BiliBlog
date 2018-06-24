@@ -1,7 +1,5 @@
 from django.db import models
-
-from datetime import datetime
-
+from django.contrib.auth.models import User
 
 class IPSaver(models.Model):
 	ip = models.CharField(max_length=16, default='127.0.0.1')

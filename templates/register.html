@@ -38,7 +38,7 @@
 {% endblock content %}
 
 {% block script_extents %}
-    <script>
-        {% include 'captcha_refresh.js' %}
-    </script>
+    <script type="text/javascript" href="{% static 'js/captcha_refresh.js' %}"></script>
 {% endblock script_extents %}
+
+{# 明天的任务---用redis设置登录时间，如果过期则需要重新登录 #}

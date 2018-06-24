@@ -200,3 +200,20 @@ CACHE_TIME_THIRTY_DAY = get_total_seconds_from_now()
 # 当@login_required不生效后，会自动调用LOGIN_URL跳转
 # 该部分填写相对的URL即可，不用跟上具体的页面
 LOGIN_URL = '/login/'
+
+# 支持email功能
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# 邮箱服务器地址
+EMAIL_HOST = 'smtp.sina.com'
+# 端口
+EMAIL_PORT = 25
+# 邮箱名称
+EMAIL_HOST_USER = 'flynngod@sina.com'
+# 邮箱密码
+EMAIL_HOST_PASSWORD = '********'
+# 用户收到邮件显示的邮箱
+DEFAULT_FROM_EMAIL = 'flynngod@sina.com'
+# 为邮件Subject-line前缀,默认是'[django]'
+EMAIL_SUBJECT_PREFIX = u'[BiliBlog密码重置][FlynnGod]'
+# 管理员站点
+SERVER_EMAIL = 'flynngod@sina.com'

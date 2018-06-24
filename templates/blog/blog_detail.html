@@ -23,6 +23,9 @@
                     <li>发表日期: {{ blog.created_time|date:'Y-m-d H:i:s' }}</li>
                     <li>阅读({{ blog.get_read_num }})</li>
                 </ul>
+                <hr/>
+                <hr/>
+                <hr/>
                 <div class="blog-content">{{ blog.content|safe }}</div>
                 <div style="text-align: right;margin-top:30px;margin-bottom:20px;margin-right:20px">
                     <span onclick="do_like({{ blog.pk }})" id="blog_like">

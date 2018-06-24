@@ -38,7 +38,5 @@
 
 
 {% block script_extents %}
-    <script>
-        {% include 'captcha_refresh.js' %}
-    </script>
+    <script type="text/javascript" href="{% static 'js/captcha_refresh.js' %}"></script>
 {% endblock script_extents %}
